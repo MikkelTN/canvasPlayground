@@ -1,0 +1,40 @@
+html,
+body,
+ul,
+ol {
+  margin: 0;
+  padding: 0; }
+
+html {
+  font-size: 100%; }
+
+body {
+  color: white;
+  font-family: sans-serif;
+  overflow: hidden;
+  width: 100%; }
+
+input {
+  border: none;
+  outline: none; }
+
+.toolbox {
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  position: absolute;
+  align-items: baseline;
+  background: #333333;
+  display: flex;
+  height: auto;
+  justify-content: space-around;
+  width: 100%;
+  z-index: 1; }
+
+.tools {
+  display: inline-flex; }
+
+.toolhead {
+  display: inline;
+  margin-right: 1rem; }

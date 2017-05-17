@@ -1,0 +1,41 @@
+@import './scss/reset';
+@import './scss/mixins';
+
+$gray: rgb(51, 51, 51);
+$lightgray: rgb(101, 101, 101);
+
+html {
+  font-size: 100%;
+}
+
+body {
+  color: white;
+  font-family: sans-serif;
+  overflow: hidden;
+  width: 100%;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+.toolbox {
+  @include abs-pos(0, auto, auto, auto);
+  align-items: baseline;
+  background: $gray;
+  display: flex;
+  height: auto;
+  justify-content: space-around;
+  width: 100%;
+  z-index: 1;
+}
+
+.tools {
+  display: inline-flex;
+}
+
+.toolhead {
+  display: inline;
+  margin-right: 1rem;
+}
