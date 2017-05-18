@@ -20,14 +20,16 @@ class SizeBar extends React.Component {
   render() {
     return (
       <div className="sizebar">
-        <h3 className="toolhead">
-          Line size: {this.state.size}
-        </h3>
+        <span className="toolhead">
+          Line size:
+        </span>
         <input
           type="range"
           min="1"
           max="50"
+          value={this.state.size}
           onChange={this.handleChange} />
+        <span> {this.state.size}</span>
       </div>
     );
   }
