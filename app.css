@@ -11,8 +11,8 @@ html {
 body {
   color: white;
   font-family: sans-serif;
-  overflow: hidden;
-  width: 100%; }
+  font-size: 1rem;
+  overflow: hidden; }
 
 input {
   border: none;
@@ -36,5 +36,4 @@ input {
   display: inline-flex; }
 
 .toolhead {
-  display: inline;
   margin-right: 1rem; }

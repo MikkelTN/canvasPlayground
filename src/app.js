@@ -10,7 +10,7 @@ class SketchApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tool: 'brush',
+      tool: 'Pencil',
       color: '#000000',
       size: 5
     },
@@ -41,14 +41,16 @@ class SketchApp extends React.Component {
     return (
       <div>
         <div className="toolbox">
-          <ToolBox tools={['Brush', 'Line', 'Eraser']} onChange={this.changeTool}/>
+          <ToolBox onChange={this.changeTool}/>
           <SizeBar onChange={this.changeSize} />
           <ColorBox onChange={this.changeColor}/>
         </div>
         <CanvasComponent
           tool={this.state.tool}
           color={this.state.color}
-          size={this.state.size} />
+          size={this.state.size}
+          width={window.innerWidth}
+          height={window.innerHeight} />
       </div>
     );
   }

@@ -5,73 +5,72 @@ class CanvasComponent extends React.Component {
     super();
     this.state = {
       isDrawing: false,
+      imgData: {},
       X: 0,
       Y: 0
     },
     this.handleStart = this.handleStart.bind(this),
     this.handleStop = this.handleStop.bind(this),
-    this.handleDraw = this.handleDraw.bind(this),
-    this.handleStartTouch = this.handleStartTouch.bind(this),
-    this.handleDrawTouch = this.handleDrawTouch.bind(this)
+    this.handleMove = this.handleMove.bind(this),
+    this.draw = this.draw.bind(this)
+    this.line = this.line.bind(this)
   }
 
   componentDidMount() {
     this.ctx = this.refs.canvas.getContext('2d');
-    this.ctx.lineJoin = 'round';
-	  this.ctx.lineCap = 'round';
-  }
-
-  componentDidUpdate() {
-    this.ctx.lineWidth = this.props.size;
-    this.ctx.strokeStyle = this.props.color;
   }
 
   handleStart(e) {
+    const x = e.nativeEvent.offsetX || e.touches[0].pageX,
+          y = e.nativeEvent.offsetY || e.touches[0].pageY;
     this.setState({
       isDrawing: true,
-      X: e.nativeEvent.offsetX,
-      Y: e.nativeEvent.offsetY
+      imgData: this.ctx.getImageData(0, 0, this.props.width, this.props.height),
+      X: x,
+      Y: y
     });
-    console.log(this.state.X);
   }
 
   handleStop() {
     this.setState({isDrawing: false});
   }
 
-  handleDraw(e) {
+  handleMove(e) {
+    e.stopPropagation();
     if (!this.state.isDrawing) {
 			return;
 		}
-	  this.ctx.beginPath();
-	  this.ctx.moveTo(this.state.X, this.state.Y);
-	  this.ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    this.ctx.stroke();
-    this.setState({
-      X: e.nativeEvent.offsetX,
-      Y: e.nativeEvent.offsetY,
-    })
+    const x = e.nativeEvent.offsetX || e.touches[0].pageX,
+          y = e.nativeEvent.offsetY || e.touches[0].pageY;
+    this.ctx.lineWidth = this.props.size;
+    this.ctx.strokeStyle = this.props.tool == 'Eraser' ? '#FFF' : this.props.color;
+    this.ctx.lineJoin = 'round';
+	  this.ctx.lineCap = 'round';
+    switch (this.props.tool) {
+      case 'Line':
+        this.line(x, y);
+        break;
+      default:
+        this.draw(x, y);
+    }
   }
 
-  handleStartTouch(e) {
-    this.setState({
-      isDrawing: true,
-      X: e.touches[0].pageX,
-      Y: e.touches[0].pageY
-    });
+  line(x, y) {
+    this.ctx.putImageData(this.state.imgData, 0, 0);
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.state.X, this.state.Y);
+    this.ctx.lineTo(x, y);
+    this.ctx.stroke();
   }
 
-  handleDrawTouch(e) {
-    if (!this.state.isDrawing) {
-			return;
-		}
+  draw(x, y) {
 	  this.ctx.beginPath();
-	  this.ctx.moveTo(this.state.X, this.state.Y);
-	  this.ctx.lineTo(e.touches[0].pageX, e.touches[0].pageY);
+    this.ctx.moveTo(this.state.X, this.state.Y);
+    this.ctx.lineTo(x, y);
     this.ctx.stroke();
     this.setState({
-      X: e.touches[0].pageX,
-      Y: e.touches[0].pageY,
+      X: x,
+      Y: y
     })
   }
 
@@ -79,15 +78,15 @@ class CanvasComponent extends React.Component {
     return (
       <canvas
         ref="canvas"
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={this.props.width}
+        height={this.props.height}
         onMouseDown={this.handleStart}
-        onMouseMove={this.handleDraw}
+        onMouseMove={this.handleMove}
         onMouseUp={this.handleStop}
         onMouseOut={this.handleStop}
-        onTouchStart={this.handleStartTouch}
+        onTouchStart={this.handleStart}
         onTouchEnd={this.handleStop}
-        onTouchMove={this.handleDrawTouch} />
+        onTouchMove={this.handleMove} />
     );
   }
 }
