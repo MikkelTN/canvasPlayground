@@ -39,6 +39,15 @@ class ToolBox extends React.Component {
             <label>Line</label>
           </div>
 
+          <div className="tool" key="Rainbow">
+            <input type="radio"
+                   name="tools"
+                   value="Rainbow"
+                   checked={this.state.selected=="Rainbow"}
+                   onChange={this.handleChange} />
+            <label>Rainbow</label>
+          </div>
+
           <div className="tool" key="Eraser">
             <input type="radio"
                    name="tools"

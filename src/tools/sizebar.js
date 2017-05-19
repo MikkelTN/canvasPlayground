@@ -21,7 +21,7 @@ class SizeBar extends React.Component {
     return (
       <div className="sizebar">
         <p className="toolhead">
-          Line size: <span> {this.state.size}</span>
+          Line size: <span> {this.state.size}px</span>
         </p>
         <input
           type="range"
