@@ -7,14 +7,14 @@ class CanvasComponent extends React.Component {
       isDrawing: false,
       imgData: {},
       X: 0,
-      Y: 0
+      Y: 0,
+      hue: 0
     },
     this.handleStart = this.handleStart.bind(this),
     this.handleStop = this.handleStop.bind(this),
     this.handleMove = this.handleMove.bind(this),
     this.draw = this.draw.bind(this),
-    this.line = this.line.bind(this),
-    this.spray = this.spray.bind(this)
+    this.line = this.line.bind(this)
   }
 
   componentDidMount() {
@@ -42,17 +42,22 @@ class CanvasComponent extends React.Component {
 		}
     const x = e.nativeEvent.offsetX || e.touches[0].pageX,
           y = e.nativeEvent.offsetY || e.touches[0].pageY;
+    this.globalCompositeOperation = 'source-over';
     this.ctx.lineWidth = this.props.size;
-    this.ctx.strokeStyle = this.props.tool == 'Eraser' ? '#FFF' : this.props.color;
-    this.ctx.lineJoin = 'round';
+    this.ctx.strokeStyle = this.props.color;
 	  this.ctx.lineCap = 'round';
     switch (this.props.tool) {
       case 'Line':
         this.line(x, y);
         break;
-      case 'Spray can':
-        this.spray(x, y);
+      case 'Rainbow':
+        this.ctx.strokeStyle = `hsl(${this.state.hue}, 100%, 50%)`;
+        this.draw(x, y);
+        this.state.hue > 360 ? this.state.hue = 0 : this.state.hue++;
         break;
+      case 'Eraser':
+        this.ctx.globalCompositeOperation = 'destination-out';
+        this.draw(x, y);
       default:
         this.draw(x, y);
     }
@@ -75,31 +80,6 @@ class CanvasComponent extends React.Component {
       X: x,
       Y: y
     })
-  }
-
-  spray(x, y) {
-    const radius = this.ctx.lineWidth / 2;
-    const area = radius * radius * Math.PI;
-    const dots = Math.ceil(area / 30);
-
-    const spray = setInterval(() => {
-      for (let i = 0; i < dots; i++) {
-        const offset = radius => {
-          for(;;) {
-            const x = Math.random() * 2 - 1;
-            const y = Math.random() * 2 - 1;
-            if (x * x + y * y <= 1) {
-              return {
-                x: x * radius,
-                y: y * radius
-              }
-            }
-          }
-        }
-        this.ctx.fillRect(x + offset.x,
-                          y + offset.y, 1, 1);
-      }
-    }, 25);
   }
 
   render() {
