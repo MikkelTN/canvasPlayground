@@ -20,9 +20,6 @@ class ToolBox extends React.Component {
   render() {
     return (
       <div>
-        <span className="toolhead">
-          Tools:
-        </span>
         <div className="tools">
           <div className="tool" key="Pencil">
             <input type="radio"

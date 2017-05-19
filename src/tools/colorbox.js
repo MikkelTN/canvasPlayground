@@ -14,9 +14,9 @@ class ColorBox extends React.Component {
   render() {
     return (
       <div className="sizebar">
-        <span className="toolhead">
+        <p className="toolhead">
           Line color:
-        </span>
+        </p>
         <input
           type="color"
           onChange={this.handleChange} />

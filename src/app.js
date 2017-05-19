@@ -5,6 +5,7 @@ import CanvasComponent from './canvas';
 import ToolBox from './tools/toolbox';
 import SizeBar from './tools/sizebar';
 import ColorBox from './tools/colorbox';
+import MenuButton from './menu-btn';
 
 class SketchApp extends React.Component {
   constructor(props) {
@@ -12,11 +13,19 @@ class SketchApp extends React.Component {
     this.state = {
       tool: 'Pencil',
       color: '#000000',
-      size: 5
+      size: 5,
+      menuExpand: false
     },
+    this.expandMenu = this.expandMenu.bind(this),
     this.changeSize = this.changeSize.bind(this),
     this.changeColor = this.changeColor.bind(this),
     this.changeTool = this.changeTool.bind(this)
+  }
+
+  expandMenu() {
+    this.setState({
+      menuExpand: !this.state.menuExpand
+    })
   }
 
   changeTool(newTool) {
@@ -38,9 +47,19 @@ class SketchApp extends React.Component {
   }
 
   render() {
+    let toolMenu;
+    if(!this.state.menuExpand) {
+      toolMenu = "toolbox hide";
+    } else {
+      toolMenu = "toolbox show";
+    }
     return (
       <div>
-        <div className="toolbox">
+        <div className="header">
+          <MenuButton onClick={this.expandMenu} />
+          <p>Canvas Playground!</p>
+        </div>
+        <div className={toolMenu} >
           <ToolBox onChange={this.changeTool}/>
           <SizeBar onChange={this.changeSize} />
           <ColorBox onChange={this.changeColor}/>
