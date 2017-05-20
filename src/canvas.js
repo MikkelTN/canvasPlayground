@@ -24,6 +24,10 @@ class CanvasComponent extends React.Component {
   handleStart(e) {
     const x = e.nativeEvent.offsetX || e.touches[0].pageX,
           y = e.nativeEvent.offsetY || e.touches[0].pageY;
+    this.ctx.globalCompositeOperation = this.props.tool == 'Eraser' ? 'destination-out' : 'source-over';
+    this.ctx.lineWidth = this.props.size;
+    this.ctx.strokeStyle = this.props.color;
+    this.ctx.lineCap = 'round';
     this.setState({
       isDrawing: true,
       imgData: this.ctx.getImageData(0, 0, this.props.width, this.props.height),
@@ -42,10 +46,6 @@ class CanvasComponent extends React.Component {
 		}
     const x = e.nativeEvent.offsetX || e.touches[0].pageX,
           y = e.nativeEvent.offsetY || e.touches[0].pageY;
-    this.globalCompositeOperation = 'source-over';
-    this.ctx.lineWidth = this.props.size;
-    this.ctx.strokeStyle = this.props.color;
-	  this.ctx.lineCap = 'round';
     switch (this.props.tool) {
       case 'Line':
         this.line(x, y);
@@ -56,7 +56,6 @@ class CanvasComponent extends React.Component {
         this.state.hue > 360 ? this.state.hue = 0 : this.state.hue++;
         break;
       case 'Eraser':
-        this.ctx.globalCompositeOperation = 'destination-out';
         this.draw(x, y);
       default:
         this.draw(x, y);
