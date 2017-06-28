@@ -27,7 +27,7 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: __dirname + '/dist',
+    contentBase: __dirname,
     compress: true,
     port: 9000,
     stats: 'errors-only',
